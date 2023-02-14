@@ -1,0 +1,114 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  name         String         @id
+  createdAt    DateTime       @default(now())
+  passwordHash String
+  Session      Session[]
+  Quest        Quest[]
+  Task         Task[]
+  UserQuest    UserQuest[]
+  UserTask     UserTask[]
+  Log          Log[]
+  QuestSharing QuestSharing[]
+}
+
+model Session {
+  id           Int       @id @default(autoincrement())
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime? @updatedAt
+  sessionToken String    @unique @default(cuid())
+  expiresAt    DateTime?
+  expired      Boolean   @default(false)
+  userName     String
+  user         User      @relation(fields: [userName], references: [name])
+}
+
+model QuestSharing {
+  userName String
+  user     User   @relation(fields: [userName], references: [name])
+  questId  Int
+  quest    Quest  @relation(fields: [questId], references: [id])
+
+  @@id([userName, questId])
+}
+
+model Quest {
+  id              Int            @id @default(autoincrement())
+  createdAt       DateTime       @default(now())
+  name            String
+  description     String?
+  creatorName     String?
+  creator         User?          @relation(fields: [creatorName], references: [name])
+  questVisibility String         @default("private") // "private", "protected", "public"
+  questType       String         @default("side") // "main", "side", "chore", "weekly", "daily"
+  questTiming     String?        @default("custom") // "unlimited", "HOUR DAY WEEK MONTH", "yyyy-mm-dd", "custom", "List:1,2,3,4,5"
+  retakeAble      Boolean        @default(true)
+  strictTimeLimit Boolean        @default(false) // user can still set it as strictTimeLimit for themselves
+  tasks           Task[]
+  UserQuest       UserQuest[]
+  // incompatible states: questType === "chore" && retakeAble === false
+  QuestSharing    QuestSharing[]
+}
+
+model Task {
+  id          Int        @id @default(autoincrement())
+  createdAt   DateTime   @default(now())
+  order       Int?
+  name        String
+  description String?
+  questId     Int
+  quest       Quest      @relation(fields: [questId], references: [id])
+  creatorName String?
+  creator     User?      @relation(fields: [creatorName], references: [name]) // can be different, if somebody else is adding to existing quest
+  UserTask    UserTask[]
+}
+
+model Log {
+  id        Int      @id @default(autoincrement())
+  userName  String
+  user      User     @relation(fields: [userName], references: [name])
+  text      String
+  createdAt DateTime @default(now())
+}
+
+model UserQuest {
+  id              Int        @id @default(autoincrement()) // id for repeatability
+  userName        String
+  user            User       @relation(fields: [userName], references: [name])
+  questId         Int
+  quest           Quest      @relation(fields: [questId], references: [id])
+  completed       Boolean    @default(false)
+  completionTime  DateTime?
+  ended           Boolean    @default(false)
+  endingTime      DateTime?
+  startTime       DateTime   @default(now())
+  state           String?
+  timeLimit       DateTime? // "unlimited" === null , "HOUR DAY WEEK MONTH" + Date from startTime , "yyyy-mm-dd"
+  strictTimeLimit Boolean    @default(false) //
+  // impossible combos: timeLimit === "unlimited" || null && strictTimeLimit === "false"
+  UserTask        UserTask[]
+}
+
+model UserTask {
+  userName       String // redundantly saved
+  user           User      @relation(fields: [userName], references: [name])
+  userQuestId    Int
+  userQuest      UserQuest @relation(fields: [userQuestId], references: [id])
+  taskId         Int
+  task           Task      @relation(fields: [taskId], references: [id])
+  completed      Boolean   @default(false)
+  completionTime DateTime?
+
+  @@id([userQuestId, taskId])
+}

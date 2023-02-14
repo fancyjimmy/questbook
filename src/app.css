@@ -1,0 +1,188 @@
+@font-face {
+    font-family: karmic_arcade;
+    src: url('/fonts/karmic_arcade.ttf');
+}
+@font-face {
+    font-family: pixel;
+    src: url('/fonts/pixel_font.ttf');
+}
+
+@font-face {
+    font-family: fibberish;
+    src: url('/fonts/fibberish.ttf');
+}
+
+
+@font-face {
+    font-family: goodpixel;
+    src: url('/fonts/EquipmentPro.ttf');
+}
+
+@font-face {
+    font-family: thickpixel;
+    src: url("/fonts/ThaleahFat.ttf");
+}
+
+@font-face {
+    font-family: bestpixel;
+    src: url("/fonts/monogram.ttf");
+}
+
+
+
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+    :root {
+
+        --color-neutral-50: #f5f5f6;
+        --color-neutral-100: #e4e6e9;
+        --color-neutral-200: #cccfd5;
+        --color-neutral-300: #a8acb8;
+        --color-neutral-400: #7d8393;
+        --color-neutral-500: #5c6170;
+        --color-neutral-600: #545766;
+        --color-neutral-700: #484b56;
+        --color-neutral-800: #40424a;
+        --color-neutral-900: #393a40;
+
+        --color-primary-50: #eff8ff;
+        --color-primary-100: #dff1ff;
+        --color-primary-200: #b8e4ff;
+        --color-primary-300: #78cfff;
+        --color-primary-400: #52c2ff;
+        --color-primary-500: #069df1;
+        --color-primary-600: #007dce;
+        --color-primary-700: #0063a7;
+        --color-primary-800: #02548a;
+        --color-primary-900: #084672;
+
+        --color-secondary-50: #f1fcf9;
+        --color-secondary-100: #cef9eb;
+        --color-secondary-200: #9df2d9;
+        --color-secondary-300: #64e4c2;
+        --color-secondary-400: #34cdaa;
+        --color-secondary-500: #1bb191;
+        --color-secondary-600: #14997f;
+        --color-secondary-700: #137260;
+        --color-secondary-800: #145b4e;
+        --color-secondary-900: #154c42;
+
+        --scroll-bar-color-primary: var(--color-primary-300);
+        --scroll-bar-color-secondary: var(--color-primary-500);
+    }
+
+    p, div, input{
+        @apply font-pixel;
+        line-height: 1.25rem;
+        font-size: 1.5rem;
+    }
+
+    body {
+        background-image: url('/background/water.png');
+        background-repeat: repeat;
+        background-size: 100px;
+        image-rendering: pixelated;
+    }
+
+
+    /* Firefox */
+    * {
+        scrollbar-width: thin;
+        scrollbar-color: var(--scroll-bar-color-secondary) var(--scroll-bar-color-primary);
+    }
+
+    /* Chrome, Edge, and Safari */
+    *::-webkit-scrollbar {
+        width: 15px;
+    }
+
+    *::-webkit-scrollbar-track {
+        background: var(--scroll-bar-color-primary);
+
+    }
+
+    *::-webkit-scrollbar-thumb {
+        background-color: var(--scroll-bar-color-secondary);
+    }
+
+}
+
+
+@layer components {
+    .cool-button{
+        @apply bg-primary-200 rounded duration-100 p-3 border-2 border-primary-900 inline-block;
+        box-shadow: 0 10px theme(colors.primary.900);
+    }
+
+    .cool-button:hover{
+        @apply bg-primary-300;
+        box-shadow: 0 8px theme(colors.primary.900);
+    }
+    .cool-button:active{
+        @apply bg-primary-400;
+        box-shadow: 0 3px theme(colors.primary.900);
+    }
+
+    .questborder {
+        border-image: url("/border/border-10.png") 12 fill repeat;
+        border-width: 36px;
+    }
+    .scroll{
+        border-image: url("/border/border-2.png") 36 fill repeat;
+        border-width: 200px;
+    }
+}
+
+
+
+@keyframes title-animation {
+    0% {
+        transform: translateY(20px);
+    }
+    50%{
+        transform: translateY(-20px);
+    }
+    100% {
+        transform: translateY(20px);
+    }
+}
+
+@keyframes reset-title-animation {
+    0% {
+        transform: translateY(0px);
+    }
+    25%{
+        transform: translateY(20px);
+    }
+    75%{
+        transform: translateY(-20px);
+    }
+    100% {
+        transform: translateY(0px);
+    }
+
+}
+
+* {
+    image-rendering: pixelated;
+}
+
+@layer components {
+
+    :root {
+        --text-box-border-color: var(--color-primary-900);
+        --text-box-width: 10px;
+    }
+
+    .text-box {
+        @apply border-4;
+        border-color: var(--text-box-border-color);
+        box-shadow: calc(var(--text-box-width) * -1) var(--text-box-width) 0 var(--text-box-border-color);
+        background: #ffffff;
+    }
+
+}
