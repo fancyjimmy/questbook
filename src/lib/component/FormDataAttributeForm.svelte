@@ -15,10 +15,7 @@
 <form {action} {method} bind:this={formBinding}>
     <FormDataInputs {exclude} {formDataAttributes}/>
 
-
-
     <slot name="custom"/>
-
     <slot name="button"/>
 </form>
 

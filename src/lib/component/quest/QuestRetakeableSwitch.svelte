@@ -21,10 +21,11 @@
 </script>
 
 <button on:click|preventDefault={() => {incrementIndex()}}>
-    <div class="aspect-square w-8 flex items-center justify-center">
+    <div class="aspect-square w-10 flex items-center justify-center">
         {#if QUEST_RETAKEABLE_OPTIONS[index] !== ""}
             <img src="/quest/boolean/{QUEST_RETAKEABLE_OPTIONS[index]}.png"
-                 alt="{QUEST_RETAKEABLE_OPTIONS[index]}">
+                 alt="{QUEST_RETAKEABLE_OPTIONS[index]}"
+                 class="w-full">
         {/if}
     </div>
 

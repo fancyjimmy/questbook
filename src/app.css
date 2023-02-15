@@ -132,8 +132,33 @@
         border-width: 36px;
     }
     .scroll{
-        border-image: url("/border/border-2.png") 36 fill repeat;
-        border-width: 200px;
+        border-image: url("/border/border-scroll.png") 9 fill repeat;
+        border-width: 50px;
+    }
+
+    .extruded{
+        border: 0.25rem solid black;
+        --extrusion-x: -0.5rem;
+        --extrusion-y: 0.5rem;
+        box-shadow: var(--extrusion-x) var(--extrusion-y) 0 black;
+    }
+
+    .questboard {
+        border-image: url("/border/border-3.png") 12 fill repeat;
+        border-width: 36px;
+    }
+
+    .card {
+        border-image: url("/border/border-9.png") 12 fill repeat;
+        border-width: 36px;
+    }
+
+    .innerboard {
+        grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+        /*
+        border-image: url("/border/border-10.png") 12 fill repeat;
+        border-width: 36px;
+                 */
     }
 }
 

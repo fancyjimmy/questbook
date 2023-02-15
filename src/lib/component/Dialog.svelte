@@ -5,17 +5,21 @@
 
     export {className as class};
 
-    export function openDialog() {
+    export function open() {
         dialog.showModal();
     }
 
-    export function closeDialog(){
+    export function close(){
         dialog.close();
     }
 </script>
 
 <dialog bind:this={dialog} class="{className || ''}">
-    <slot></slot>
+    <slot/>
+
+    <slot name="closeButton">
+        <button on:click|preventDefault={close}>Close</button>
+    </slot>
 </dialog>
 
 
@@ -26,7 +30,7 @@
 
 
     dialog::backdrop {
-        @apply bg-black bg-opacity-50 backdrop-blur;
+        @apply backdrop-blur;
     }
 
     input[type="color"]::-webkit-color-swatch-wrapper {

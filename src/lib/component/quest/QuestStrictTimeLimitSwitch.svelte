@@ -21,10 +21,11 @@
 </script>
 
 <button on:click|preventDefault={() => {incrementIndex()}}>
-    <div class="aspect-square w-8 flex items-center justify-center">
+    <div class="aspect-square w-10 flex items-center justify-center">
         {#if QUEST_STRICTTIMELIMIT_OPTIONS[index] !== ""}
             <img src="/quest/boolean/{QUEST_STRICTTIMELIMIT_OPTIONS[index]}.png"
-                 alt="{QUEST_STRICTTIMELIMIT_OPTIONS[index]}">
+                 alt="{QUEST_STRICTTIMELIMIT_OPTIONS[index]}"
+            class="w-full">
         {/if}
     </div>
 

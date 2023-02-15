@@ -17,7 +17,7 @@
         <slot/>
 
         <div class="grid grid-cols-2" class:grid-cols-3={reset}>
-            <button on:click|preventDefault={dialog.closeDialog()} class="text-red-500 font-semibold text-lg">
+            <button on:click|preventDefault={dialog.close()} class="text-red-500 font-semibold text-lg">
                 Close
             </button>
 

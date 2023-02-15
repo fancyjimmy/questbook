@@ -21,9 +21,10 @@
 </script>
 
 <button on:click|preventDefault={() => {incrementIndex()}}>
-    <div class="aspect-square w-8 flex items-center justify-center">
+    <div class="aspect-square w-10 flex items-center justify-center">
         {#if QUEST_VISIBILITY_OPTIONS[index] !== ""}
             <img src="/quest/visibility/{QUEST_VISIBILITY_OPTIONS[index]}.png"
+                 class="w-full"
                  alt="{QUEST_VISIBILITY_OPTIONS[index]}">
         {/if}
     </div>

@@ -60,7 +60,6 @@ class LogRepositoryImpl implements LogRepository{
         return log;
     }
     async getAllLogsByUser(username: string): Promise<Log[]> {
-        console.log("hi");
         const logs = this.db.log.findMany({
             where: {
                 userName: username

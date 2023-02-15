@@ -68,24 +68,6 @@
 
 <style lang="postcss">
 
-    .questboard {
-        border-image: url("/border/border-3.png") 12 fill repeat;
-        border-width: 36px;
-    }
-
-    .card {
-        border-image: url("/border/border-9.png") 12 fill repeat;
-        border-width: 36px;
-    }
-
-
-    .innerboard {
-        grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-        /*
-        border-image: url("/border/border-10.png") 12 fill repeat;
-        border-width: 36px;
-                 */
-    }
 
     .title-animation:hover > * {
         --title-animation-delay: calc(var(--i) * 0.05s);
