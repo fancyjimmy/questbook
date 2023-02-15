@@ -6,10 +6,11 @@
     import QuestTimingSwitch from '$lib/component/quest/QuestTimingSwitch.svelte';
     import QuestStrictTimeLimitSwitch from '$lib/component/quest/QuestStrictTimeLimitSwitch.svelte';
     import QuestRetakeableSwitch from '$lib/component/quest/QuestRetakeableSwitch.svelte';
+    import {questFormDataAttributes} from "$lib/domain/formDataAttributes/QuestFormData.js";
 
     let quest = {
         name: '',
-        description: ''
+        description: '',
     };
 
     let taskDialog;
@@ -32,30 +33,68 @@
             name: '',
             description: ''
         };
-
-        console.log(taskList);
-
         taskDialog.close();
     }
 
     let retakeAble;
     let strictTimeLimit;
-    let questTiming;
-    let questVisibility;
-    let questType;
+    let questVisibility = {
+        value: 'private',
+        label: 'private'
+    };
+    let questType = {
+        value: 'side',
+        label: 'side'
+    };
+
+    type Time = {
+        months: number,
+        days: number,
+        hours: number,
+        minutes: number
+    }
+
+    function getDuration(time: Time) {
+        let duration = 0;
+        duration += time.months * 30 * 24 * 60 * 60 * 1000;
+        duration += time.days * 24 * 60 * 60 * 1000;
+        duration += time.hours * 60 * 60 * 1000;
+        duration += time.minutes * 60 * 1000;
+        return duration;
+    }
+
+    function fromDuration(duration: number): Time {
+        let time: Time = {
+            months: 0,
+            days: 0,
+            hours: 0,
+            minutes: 0
+        }
+        time.months = Math.floor(duration / (30 * 24 * 60 * 60 * 1000));
+        duration -= time.months * 30 * 24 * 60 * 60 * 1000;
+        time.days = Math.floor(duration / (24 * 60 * 60 * 1000));
+        duration -= time.days * 24 * 60 * 60 * 1000;
+        time.hours = Math.floor(duration / (60 * 60 * 1000));
+        duration -= time.hours * 60 * 60 * 1000;
+        time.minutes = Math.floor(duration / (60 * 1000));
+        duration -= time.minutes * 60 * 1000;
+        return time;
+    }
 
     function onQuestTimingChange(value) {
-        console.log(value);
+        if (value.detail.label === 'date') {
+            questTimingOption.dialog.open();
+        } else if (value.detail.label === 'time') {
+            questTimingOption.dialog.open();
+        }
     }
 
     function onQuestTypeChange(value) {
         console.log(value);
-
     }
 
     function onQuestVisibilityChange(value) {
         console.log(value);
-
     }
 
     function onStrictTimeLimitChange(value) {
@@ -66,8 +105,20 @@
         console.log(value);
     }
 
-
-    let questTimingDialog;
+    let questTimingOption = {
+        dialog: null,
+        date: new Date(),
+        time: {
+            months: 0,
+            days: 0,
+            hours: 0,
+            minutes: 0
+        },
+        questTiming: {
+            value: 'custom',
+            label: 'custom'
+        }
+    };
 </script>
 
 <div class="xl:h-full lg:h-full grid grid-cols-1 p-5 lg:grid-cols-2 xl:grid-cols-2">
@@ -91,39 +142,63 @@
             </div>
             <div class="flex justify-between">
                 <h2 class="font-thick text-amber-900 align-middle  text-3xl">Strict Time Limit</h2>
-                <QuestStrictTimeLimitSwitch bind:strictTimeLimit withEmpty={false} on:change={onStrictTimeLimitChange}/>
+                <QuestStrictTimeLimitSwitch
+                        bind:strictTimeLimit
+                        withEmpty={false}
+                        on:change={onStrictTimeLimitChange}
+                />
             </div>
             <div class="flex justify-between">
                 <h2 class="font-thick text-amber-900 align-middle inline-block text-3xl">Quest Timing</h2>
-                {#if questTiming === "date"}
-                    <input type="date"/>
-                {:else if questTiming === "time"}
-                    <div class="flex flex-1 gap-2 h-full justify-between px-3">
-                        <input class="p-1 noOutline border-none rounded shadow w-[20%] h-full" type="number" placeholder="months">
-                        <input class="p-1 noOutline border-none rounded shadow w-[20%] h-full" type="number" placeholder="days">
-                        <input class="p-1 noOutline border-none rounded shadow w-[20%] h-full" type="number" placeholder="hours">
-                        <input class="p-1 noOutline border-none rounded shadow w-[20%] h-full" type="number" placeholder="minutes">
-                    </div>
-                {/if}
-                <QuestTimingSwitch bind:questTiming withEmpty={false} on:change={onQuestTimingChange}/>
+
+                <div class="flex gap-3 items-center">
+                    {#if questTimingOption.questTiming.label === "date"}
+                        <p class="text-2xl italic text-gray-700">{questTimingOption.date.toLocaleDateString()}</p>
+                    {:else if questTimingOption.questTiming.label === "time"}
+                        <p class="text-2xl italic text-gray-700">{questTimingOption.time.months}
+                            months {questTimingOption.time.days} days {questTimingOption.time.hours}
+                            hours {questTimingOption.time.minutes} minutes</p>
+                    {:else}
+                        <p class="text-2xl italic text-gray-700">{questTimingOption.questTiming.label}</p>
+                    {/if}
+                    <QuestTimingSwitch
+                            bind:questTiming={questTimingOption.questTiming}
+                            withEmpty={false}
+                            on:change={onQuestTimingChange}
+                    />
+                </div>
             </div>
             <div class="flex justify-between">
                 <h2 class="font-thick text-amber-900 align-middle inline-block text-3xl">Type</h2>
-                <QuestTypeSwitch bind:questType withEmpty={false} on:change={onQuestTypeChange}/>
+
+                <div class="flex gap-3 items-center">
+                    <p class="text-2xl italic text-gray-700">{questType.label}</p>
+                    <QuestTypeSwitch bind:questType withEmpty={false} on:change={onQuestTypeChange}/>
+                </div>
             </div>
             <div class="flex justify-between">
                 <h2 class="font-thick text-amber-900 align-middle inline-block text-3xl">Visibility</h2>
-                <QuestVisibilitySwitch bind:questVisibility withEmpty={false} on:change={onQuestVisibilityChange}/>
+
+                <div class="flex gap-3 items-center">
+                    <p class="text-2xl italic text-gray-700">{questVisibility.label}</p>
+                    <QuestVisibilitySwitch
+                            bind:questVisibility
+                            withEmpty={false}
+                            on:change={onQuestVisibilityChange}
+                    />
+                </div>
             </div>
         </div>
         <div class="flex-1 flex flex-col">
-            <h2 class="font-thick text-amber-900 align-middle inline-block text-3xl my-2">Description:</h2>
+            <h2 class="font-thick text-amber-900 align-middle inline-block text-3xl my-2">
+                Description:
+            </h2>
             <textarea
                     bind:value={quest.description}
                     placeholder="Description"
                     spellcheck="false"
                     style="--scroll-bar-color-primary: #ffde84; --scroll-bar-color-secondary: #ffc029;"
-                    maxlength="700"
+                    maxlength="500"
                     class="h-full flex-1 resize-none w-full rounded shadow-md bg-amber-200 p-2 noOutline min-h-[300px]"
             />
         </div>
@@ -163,8 +238,63 @@
     </div>
 </div>
 
-<Dialog bind:this={questTimingDialog}>
+<Dialog bind:this={questTimingOption.dialog} class="extruded relative w-[80vw] max-w-[800px]">
+    <h2 class="font-thickest mb-5">Quest Timing {questTimingOption.questTiming.label}</h2>
 
+    <div class="flex">
+        <div class="flex-1">
+            {#if questTimingOption.questTiming.label === 'date'}
+                <input
+                        type="date"
+                        min={new Date().toLocaleDateString()}
+                        bind:value={questTimingOption.date}
+                />
+            {:else if questTimingOption.questTiming.label === 'time'}
+                <div class="flex flex-1 gap-2 h-full justify-between px-3">
+                    <input
+                            class="p-1 noOutline border-none rounded shadow w-[20%] h-full"
+                            type="number"
+                            placeholder="months"
+                            bind:value={questTimingOption.time.months}
+                            min="0"
+                    />
+                    <input
+                            class="p-1 noOutline border-none rounded shadow w-[20%] h-full"
+                            type="number"
+                            placeholder="days"
+                            bind:value={questTimingOption.time.days}
+                            min="0"
+                    />
+                    <input
+                            class="p-1 noOutline border-none rounded shadow w-[20%] h-full"
+                            type="number"
+                            placeholder="hours"
+                            bind:value={questTimingOption.time.hours}
+                            min="0"
+                    />
+                    <input
+                            class="p-1 noOutline border-none rounded shadow w-[20%] h-full"
+                            type="number"
+                            placeholder="minutes"
+                            bind:value={questTimingOption.time.minutes}
+                            min="0"
+                    />
+                </div>
+            {/if}
+        </div>
+        <button
+                on:click|preventDefault={() => {
+                if (questTimingOption.questTiming.label === 'time'){
+                    questTimingOption.time = fromDuration(getDuration(questTimingOption.time));
+                }
+				questTimingOption.dialog.close();
+			}}
+                class="cool-button"
+        >Set Timing
+        </button>
+    </div>
+
+    <div slot="closeButton"/>
 </Dialog>
 
 <Dialog bind:this={taskDialog} class="extruded relative w-[80vw] max-w-[800px]">
