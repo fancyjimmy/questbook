@@ -1,33 +1,23 @@
 <script lang="ts">
-    import {QUEST_VISIBILITY} from "../../constants";
+    import {createEventDispatcher} from 'svelte';
+    import ImageSwitch from "$lib/component/quest/ImageSwitch.svelte";
 
-    let QUEST_RETAKEABLE_OPTIONS;
+    const dispatch = createEventDispatcher();
 
     export let withEmpty = false;
-    if (withEmpty) {
-        QUEST_RETAKEABLE_OPTIONS = [true, false, ""];
-    } else {
-        QUEST_RETAKEABLE_OPTIONS = [true, false];
-    }
-
     export let index = 0;
-    export let retakeAble: string = QUEST_RETAKEABLE_OPTIONS[index];
+    export let questRetakeAble = false;
 
-
-    function incrementIndex() {
-        index = (index + 1) % QUEST_RETAKEABLE_OPTIONS.length;
-        retakeAble = QUEST_RETAKEABLE_OPTIONS[index];
+    function forward(event) {
+        dispatch('change', event.detail);
     }
+
 </script>
 
-<button on:click|preventDefault={() => {incrementIndex()}}>
-    <div class="aspect-square w-10 flex items-center justify-center">
-        {#if QUEST_RETAKEABLE_OPTIONS[index] !== ""}
-            <img src="/quest/boolean/{QUEST_RETAKEABLE_OPTIONS[index]}.png"
-                 alt="{QUEST_RETAKEABLE_OPTIONS[index]}"
-                 class="w-full">
-        {/if}
-    </div>
-
-    <input type="hidden" name="retakeAble" value="{QUEST_RETAKEABLE_OPTIONS[index]}">
-</button>
+<ImageSwitch on:change={forward}
+             bind:value={questRetakeAble}
+             bind:index={index}
+             options={[{value: true, label: 'true'}, {value: false, label: 'false'}]}
+             name="questRetakeAble"
+             directory="/quest/boolean"
+             {withEmpty}/>

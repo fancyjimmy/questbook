@@ -35,7 +35,7 @@
         <p>Retakeable</p>
         <QuestStrictTimeLimitSwitch bind:strictTimeLimit={strictTimeLimit} withEmpty={true}/>
         <p>Strict Time Limit</p>
-        <QuestTimingSwitch bind:questTiming={questTiming}></QuestTimingSwitch>
+        <QuestTimingSwitch bind:questTiming={questTiming} withEmpty={true}></QuestTimingSwitch>
         <p>Quest Timing</p>
         <QuestTypeSwitch bind:questType={questVisibility} withEmpty={true}/>
         <p>Type</p>

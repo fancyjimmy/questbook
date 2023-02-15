@@ -43,6 +43,31 @@
     let questTiming;
     let questVisibility;
     let questType;
+
+    function onQuestTimingChange(value) {
+        console.log(value);
+    }
+
+    function onQuestTypeChange(value) {
+        console.log(value);
+
+    }
+
+    function onQuestVisibilityChange(value) {
+        console.log(value);
+
+    }
+
+    function onStrictTimeLimitChange(value) {
+        console.log(value);
+    }
+
+    function onRetakeAbleChange(value) {
+        console.log(value);
+    }
+
+
+    let questTimingDialog;
 </script>
 
 <div class="xl:h-full lg:h-full grid grid-cols-1 p-5 lg:grid-cols-2 xl:grid-cols-2">
@@ -62,11 +87,11 @@
         <div class=" grid gap-1 items-center align-middle">
             <div class="flex justify-between">
                 <h2 class="font-thick text-amber-900 align-middle inline-block text-3xl">Retakeable</h2>
-                <QuestRetakeableSwitch bind:retakeAble withEmpty={false}/>
+                <QuestRetakeableSwitch bind:retakeAble withEmpty={false} on:change={onRetakeAbleChange}/>
             </div>
             <div class="flex justify-between">
                 <h2 class="font-thick text-amber-900 align-middle  text-3xl">Strict Time Limit</h2>
-                <QuestStrictTimeLimitSwitch bind:strictTimeLimit withEmpty={false}/>
+                <QuestStrictTimeLimitSwitch bind:strictTimeLimit withEmpty={false} on:change={onStrictTimeLimitChange}/>
             </div>
             <div class="flex justify-between">
                 <h2 class="font-thick text-amber-900 align-middle inline-block text-3xl">Quest Timing</h2>
@@ -80,25 +105,26 @@
                         <input class="p-1 noOutline border-none rounded shadow w-[20%] h-full" type="number" placeholder="minutes">
                     </div>
                 {/if}
-                <QuestTimingSwitch bind:questTiming withEmpty={false}/>
+                <QuestTimingSwitch bind:questTiming withEmpty={false} on:change={onQuestTimingChange}/>
             </div>
             <div class="flex justify-between">
                 <h2 class="font-thick text-amber-900 align-middle inline-block text-3xl">Type</h2>
-                <QuestTypeSwitch bind:questType withEmpty={false}/>
+                <QuestTypeSwitch bind:questType withEmpty={false} on:change={onQuestTypeChange}/>
             </div>
             <div class="flex justify-between">
                 <h2 class="font-thick text-amber-900 align-middle inline-block text-3xl">Visibility</h2>
-                <QuestVisibilitySwitch bind:questVisibility withEmpty={false}/>
+                <QuestVisibilitySwitch bind:questVisibility withEmpty={false} on:change={onQuestVisibilityChange}/>
             </div>
         </div>
         <div class="flex-1 flex flex-col">
-            <h2 class="font-thick text-amber-900 align-middle inline-block text-3xl">Description:</h2>
+            <h2 class="font-thick text-amber-900 align-middle inline-block text-3xl my-2">Description:</h2>
             <textarea
                     bind:value={quest.description}
                     placeholder="Description"
                     spellcheck="false"
                     style="--scroll-bar-color-primary: #ffde84; --scroll-bar-color-secondary: #ffc029;"
-                    class="h-full flex-1 resize-none w-full rounded shadow bg-amber-200 p-2 noOutline border min-h-[300px]"
+                    maxlength="700"
+                    class="h-full flex-1 resize-none w-full rounded shadow-md bg-amber-200 p-2 noOutline min-h-[300px]"
             />
         </div>
     </div>
@@ -136,6 +162,10 @@
         </button>
     </div>
 </div>
+
+<Dialog bind:this={questTimingDialog}>
+
+</Dialog>
 
 <Dialog bind:this={taskDialog} class="extruded relative w-[80vw] max-w-[800px]">
     <h2 class="font-thickest mb-5">New Task</h2>
