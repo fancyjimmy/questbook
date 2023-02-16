@@ -149,20 +149,41 @@ export class Theme {
         this._neutral = neutral;
     }
 
-    apply() {
+    static from(object: {name: string, primary: string, secondary:string, neutral:string}){
+        return new Theme(
+            object.name,
+            object.primary,
+            object.secondary,
+            object.neutral
+        )
+    }
+
+
+    application(node: HTMLElement){
+        this.apply(node);
+        return {
+            destroy() {
+                ;
+            }
+        };
+    }
+
+
+
+    apply(node: HTMLElement) {
         const steps: ColorPaletteKeys[] = ['50', '100', '200', '300', '400', '500', '600', '700', '800', '900'];
         const palettes = ['primary', 'secondary', 'neutral'];
 
         palettes.forEach(palette => {
             steps.forEach(step  => {
                 if (palette === 'neutral'){
-                    document.documentElement.style.setProperty(`--color-${palette}-${step}`, this.neutralPalette[step]);
+                    node.style.setProperty(`--color-${palette}-${step}`, this.neutralPalette[step]);
                     return;
                 } else if (palette === 'primary'){
-                    document.documentElement.style.setProperty(`--color-${palette}-${step}`, this.primaryPalette[step]);
+                    node.style.setProperty(`--color-${palette}-${step}`, this.primaryPalette[step]);
                     return;
                 } else if (palette === 'secondary'){
-                    document.documentElement.style.setProperty(`--color-${palette}-${step}`, this.secondaryPalette[step]);
+                    node.style.setProperty(`--color-${palette}-${step}`, this.secondaryPalette[step]);
                     return;
                 }
             });

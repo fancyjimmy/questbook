@@ -203,6 +203,28 @@
         --text-box-width: 10px;
     }
 
+    .inner-dark-1{
+        --b-width: 48px;
+        border-image: url("/border/inner/dark-1.png") 16 fill repeat;
+        border-width: var(--b-width);
+    }
+    .inner-dark-2{
+        --b-width: 48px;
+        border-image: url("/border/inner/dark-2.png") 16 fill repeat;
+        border-width: var(--b-width);
+    }
+    .inner-light-1{
+        --b-width: 48px;
+        border-image: url("/border/inner/light-1.png") 16 fill repeat;
+        border-width: var(--b-width);
+    }
+    .inner-light-2{
+        --b-width: 48px;
+        border-image: url("/border/inner/light-2.png") 16 fill repeat;
+        border-width: var(--b-width);
+    }
+
+
     .text-box {
         @apply border-4;
         border-color: var(--text-box-border-color);

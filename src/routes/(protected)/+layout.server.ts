@@ -5,9 +5,9 @@ export const load: LayoutServerLoad = async ({locals}) => {
     if (!locals.user){
         throw error(401, {
             message: "Not Logged in",
-            display: "You have to be logged in to view your Quests",
+            display: "You have to be logged in to view this page",
             redirect: true,
-            location: "/account"
+            location: "/login"
         })
     }
 

@@ -17,18 +17,20 @@
     export let form;
 
 
+    let empty = {
+        "label": "",
+        "value": ""
+    }
 
-    let questVisibility: string;
-    let strictTimeLimit;
-    let retakeAble;
-    let questTiming;
-
-
+    let questVisibility = {...empty};
+    let strictTimeLimit = {...empty};
+    let retakeAble = {...empty};
+    let questTiming = {...empty};
 
 </script>
 
 <div class="questboard m-4">
-    <h1 class="text-6xl m-3 text-center text-amber-900">{title}</h1>
+    <h1 class="text-6xl m-3 text-center text-amber-900 font-thick">{title}</h1>
 
     <div class="filterbox w-full flex flex-row-reverse gap-3 items-center">
         <QuestRetakeableSwitch bind:retakeAble={retakeAble} withEmpty={true}/>
