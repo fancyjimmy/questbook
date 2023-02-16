@@ -91,16 +91,19 @@
 
     /* Firefox */
     * {
-        scrollbar-width: thin;
+        --scrollbar-width: thin;
+        scrollbar-width: var(--scrollbar-width);
         scrollbar-color: var(--scroll-bar-color-secondary) var(--scroll-bar-color-primary);
     }
 
     /* Chrome, Edge, and Safari */
     *::-webkit-scrollbar {
-        width: 15px;
+        --scrollbar-width: 15px;
+        width: var(--scrollbar-width)
     }
 
     *::-webkit-scrollbar-track {
+        width: var(--scrollbar-width);
         background: var(--scroll-bar-color-primary);
 
     }
